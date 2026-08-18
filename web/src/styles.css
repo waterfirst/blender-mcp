@@ -68,8 +68,11 @@ button.primary { color: #06202a; border-color: #67e8f9; background: linear-gradi
 .viewport-toolbar button { padding: 7px 9px; }
 .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 10px #22c55e; }
 .status-dot.danger { background: #f43f5e; box-shadow: 0 0 10px #f43f5e; }
-.viewport-host { min-height: 0; width: 100%; height: 100%; }
+.viewport-host { position: relative; min-height: 0; width: 100%; height: 100%; }
 .viewport-host canvas { display: block; width: 100%; height: 100%; }
+.webgl-fallback { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; padding: 28px; text-align: center; background: radial-gradient(circle at 50% 42%, rgba(30, 64, 175, .18), rgba(7, 16, 30, .96) 62%); }
+.webgl-fallback strong { color: #dbeafe; font-size: 15px; }
+.webgl-fallback p { max-width: 430px; margin: 9px 0 0; color: #8da0b8; font-size: 10px; line-height: 1.65; }
 .legend { position: absolute; z-index: 2; left: 50%; bottom: 18px; transform: translateX(-50%); display: flex; align-items: center; gap: 8px; padding: 7px 10px; border: 1px solid var(--border); border-radius: 999px; background: rgba(4, 11, 21, .78); backdrop-filter: blur(10px); }
 .legend span { color: #9fb0c4; font-size: 8px; }
 .legend-bar { width: min(180px, 24vw); height: 5px; border-radius: 99px; background: linear-gradient(90deg, #2563eb, #dce7f6 50%, #f43f5e); }

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import type { DerivedSimulation, Vector3Tuple } from "../types";
@@ -43,6 +43,7 @@ export function StressViewport({
   showReference,
   resetViewToken,
 }: StressViewportProps) {
+  const [webglError, setWebglError] = useState(false);
   const hostRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
@@ -65,6 +66,15 @@ export function StressViewport({
     const host = hostRef.current;
     if (!host) return;
 
+    let renderer: THREE.WebGLRenderer;
+    try {
+      renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
+      setWebglError(false);
+    } catch {
+      setWebglError(true);
+      return;
+    }
+
     const scene = new THREE.Scene();
     scene.background = new THREE.Color("#07101e");
     scene.fog = new THREE.Fog("#07101e", 16, 70);
@@ -74,7 +84,6 @@ export function StressViewport({
     camera.position.set(6, 4, 7);
     cameraRef.current = camera;
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(host.clientWidth, host.clientHeight);
@@ -239,5 +248,14 @@ export function StressViewport({
     }
   }, [simulation, showReference, resetViewToken]);
 
-  return <div className="viewport-host" ref={hostRef} aria-label={`${simulation.title} 3D 응력 시각화`} />;
+  return (
+    <div className="viewport-host" ref={hostRef} aria-label={`${simulation.title} 3D 응력 시각화`}>
+      {webglError && (
+        <div className="webgl-fallback" role="status">
+          <strong>이 브라우저에서는 3D 가속을 사용할 수 없습니다.</strong>
+          <p>Chrome 또는 Edge에서 하드웨어 가속을 켜면 응력 모델이 표시됩니다. 계산 결과와 조절 기능은 계속 사용할 수 있습니다.</p>
+        </div>
+      )}
+    </div>
+  );
 }
