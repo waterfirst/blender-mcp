@@ -9,6 +9,13 @@ wheels/
 # Virtual environments
 .venv
 
+# Frontend dependencies and tool caches
+node_modules/
+web/.vite/
+*.tsbuildinfo
+web/vite.config.js
+web/vite.config.d.ts
+
 # macOS
 .DS_Store
 
@@ -17,7 +24,10 @@ src/blender_mcp/config.py
 local_tests/
 /test_*.py
 .pytest_cache/
+pytest-of-root/
 
 supabase/
 
 scripts/
+!web/scripts/
+!web/scripts/generate_examples.py
