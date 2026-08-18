@@ -66,6 +66,15 @@ export function StressViewport({
     const host = hostRef.current;
     if (!host) return;
 
+    const probe = document.createElement("canvas");
+    const supportsWebGL = Boolean(
+      window.WebGLRenderingContext && (probe.getContext("webgl2") || probe.getContext("webgl")),
+    );
+    if (!supportsWebGL) {
+      setWebglError(true);
+      return;
+    }
+
     let renderer: THREE.WebGLRenderer;
     try {
       renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
